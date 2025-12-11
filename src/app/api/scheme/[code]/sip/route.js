@@ -29,8 +29,13 @@ export async function POST(request, { params }) {
   }
 
   const { amount, frequency, from, to } = body;
-  if (!amount || frequency !== 'monthly' || !from || !to) {
-    return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+  
+  // FIXED: Validate frequency against allowed values
+  const allowedFrequencies = ['monthly', 'quarterly', 'yearly'];
+  if (!amount || !from || !to || !allowedFrequencies.includes(frequency)) {
+    return NextResponse.json({ 
+      error: 'Invalid parameters. Frequency must be monthly, quarterly, or yearly' 
+    }, { status: 400 });
   }
 
   const startDate = new Date(from);
@@ -54,16 +59,23 @@ export async function POST(request, { params }) {
     const sortedNavHistory = [...navHistory].sort((a, b) => parseDDMMYYYY(a.date) - parseDDMMYYYY(b.date));
     const navMap = new Map(sortedNavHistory.map(entry => [formatDateKey(parseDDMMYYYY(entry.date)), parseFloat(entry.nav)]));
 
-    // Generate monthly investment dates
+    // Generate investment dates based on frequency
     const investmentDates = [];
     let current = new Date(startDate);
+    
+    // Determine month increment based on frequency
+    let monthIncrement = 1;
+    if (frequency === 'quarterly') monthIncrement = 3;
+    if (frequency === 'yearly') monthIncrement = 12;
+
     while (current <= endDate) {
       investmentDates.push(new Date(current));
-      current.setMonth(current.getMonth() + 1);
+      current.setMonth(current.getMonth() + monthIncrement);
     }
 
     let totalInvested = 0;
     let totalUnits = 0;
+    const timeline = []; // For chart data
 
     for (const investDate of investmentDates) {
       totalInvested += amount;
@@ -83,6 +95,15 @@ export async function POST(request, { params }) {
       }
 
       totalUnits += amount / nav;
+
+      // Add to timeline for chart (current value at this point)
+      const currentValue = totalUnits * nav;
+      timeline.push({
+        date: formatDateKey(investDate),
+        value: parseFloat(currentValue.toFixed(2)),
+        invested: totalInvested,
+        units: parseFloat(totalUnits.toFixed(4))
+      });
     }
 
     // Latest NAV for current value
@@ -100,15 +121,18 @@ export async function POST(request, { params }) {
     }
 
     return NextResponse.json({
-      totalInvested: totalInvested.toFixed(2),
-      currentValue: currentValue.toFixed(2),
-      totalUnits: totalUnits.toFixed(4),
-      absoluteReturn: absoluteReturn.toFixed(2),
-      annualizedReturn: annualizedReturn.toFixed(2),
+      totalInvested: parseFloat(totalInvested.toFixed(2)),
+      currentValue: parseFloat(currentValue.toFixed(2)),
+      totalUnits: parseFloat(totalUnits.toFixed(4)),
+      absoluteReturn: parseFloat(absoluteReturn.toFixed(2)),
+      annualizedReturn: parseFloat(annualizedReturn.toFixed(2)),
+      timeline: timeline,
+      frequency: frequency,
+      numberOfInvestments: investmentDates.length
     });
 
   } catch (error) {
-    console.error(error);
+    console.error('SIP Calculation Error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

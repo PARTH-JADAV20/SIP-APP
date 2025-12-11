@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/layout.js", "src/app/page.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/layout.js", "src/app/page.js", "src/app/virtual-portfolio/[id]/page.js", "src/app/components/PerformanceMetrics.js", "src/app/virtual-portfolio/page.js", "src/app/components/AddFundDialog.js", "src/app/components/PortfolioCard.js", "src/app/components/CreatePortfolioDialog.js", "src/app/components/FundTable.js"],
   "exclude": ["node_modules"]
 }
