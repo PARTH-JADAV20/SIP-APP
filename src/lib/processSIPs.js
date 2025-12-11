@@ -1,5 +1,5 @@
 // In processSIPs.js
-const processSIPs = async () => {
+export async function processSIPs() {
   const db = await getDb();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -166,5 +166,3 @@ const processSIPs = async () => {
     }
   }
 };
-
-export { processSIPs };
