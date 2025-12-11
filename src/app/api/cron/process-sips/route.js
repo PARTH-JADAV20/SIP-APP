@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { processSIPs } from '@/lib/processSIPs';
+import { processSIPs } from '../../../../lib/processSIPs';
 
 // This is a protected route that should only be called by the cron job
 export async function GET(request) {

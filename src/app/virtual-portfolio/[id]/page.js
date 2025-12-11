@@ -394,7 +394,7 @@ export default function PortfolioDetailPage({ params }) {
         <DialogTitle>Delete Portfolio</DialogTitle>
         <DialogContent>
           <Typography>
-            Are you sure you want to delete "{portfolio.portfolioName}"? This action cannot be undone.
+            Are you sure you want to delete &quot;{portfolio.portfolioName}&quot;? This action cannot be undone.
           </Typography>
         </DialogContent>
         <DialogActions>

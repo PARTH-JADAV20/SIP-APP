@@ -1,5 +1,5 @@
 // components/LoadingSkeletons.js
-import { Skeleton } from '@mui/material';
+import { Box, Skeleton } from '@mui/material';
 
 export function PortfolioListSkeleton() {
   return (

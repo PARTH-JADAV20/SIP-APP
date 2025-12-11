@@ -166,3 +166,5 @@ const processSIPs = async () => {
     }
   }
 };
+
+export { processSIPs };

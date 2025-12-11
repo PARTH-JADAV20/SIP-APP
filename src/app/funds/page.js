@@ -214,7 +214,7 @@ export default function FundsPage() {
                 </Typography>
                 {q && (
                     <Typography variant="body2" color="primary">
-                        Search results for: "{q}"
+                        Search results for: &quot;{q}&quot;
                     </Typography>
                 )}
             </Box>

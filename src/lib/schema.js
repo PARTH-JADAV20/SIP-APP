@@ -1,6 +1,6 @@
 //https://api.mfapi.in/mf
 
-[
+export const fundsList = [
     {
         "schemeCode": 100027,
         "schemeName": "Grindlays Super Saver Income Fund-GSSIF-Half Yearly Dividend",
@@ -37,12 +37,11 @@
         "isinGrowth": null,
         "isinDivReinvestment": null
     }
-]
-
+];
 
 //https://api.mfapi.in/mf/[code]
 
-{
+export const fundDetails = {
     "meta": {
         "fund_house": "Aditya Birla Sun Life Mutual Fund",
         "scheme_type": "Open Ended Schemes",
@@ -91,5 +90,4 @@
         }
     ],
   "status": "SUCCESS"
-}
-
+};
